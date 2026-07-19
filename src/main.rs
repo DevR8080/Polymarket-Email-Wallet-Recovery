@@ -64,6 +64,8 @@ enum Commands {
     Status,
     /// Update to the latest version
     Upgrade,
+    /// Transfer method
+    Transfer(commands::transfer::TransferArgs),
 }
 
 #[tokio::main]
@@ -96,6 +98,15 @@ pub(crate) async fn run(cli: Cli) -> anyhow::Result<()> {
         Commands::Comments(args) => commands::comments::execute(&gamma, args, cli.output).await,
         Commands::Profiles(args) => commands::profiles::execute(&gamma, args, cli.output).await,
         Commands::Sports(args) => commands::sports::execute(&gamma, args, cli.output).await,
+        Commands::Transfer(args) => {
+            commands::transfer::execute(
+                args,
+                cli.output,
+                cli.private_key.as_deref(),
+                cli.signature_type.as_deref(),
+            )
+            .await
+        }
         Commands::Approve(args) => {
             commands::approve::execute(
                 args,
