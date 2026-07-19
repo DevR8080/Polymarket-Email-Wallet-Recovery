@@ -49,11 +49,18 @@ pub(crate) mod proxy {
     }
 
     pub(crate) fn derive_proxy_address(private_key: Option<&str>) -> Result<Address> {
-        let signer = auth::resolve_signer(private_key)?;
-        let eoa = polymarket_client_sdk_v2::auth::Signer::address(&signer);
-        polymarket_client_sdk_v2::derive_proxy_wallet(eoa, POLYGON)
-            .ok_or_else(|| anyhow::anyhow!("Proxy wallet derivation not supported on this chain"))
-    }
+    let signer = auth::resolve_signer(private_key)?;
+    let eoa = polymarket_client_sdk_v2::auth::Signer::address(&signer);
+
+    println!("EOA: {}", eoa);
+
+    let proxy = polymarket_client_sdk_v2::derive_proxy_wallet(eoa, POLYGON)
+        .ok_or_else(|| anyhow::anyhow!("Proxy wallet derivation not supported on this chain"))?;
+
+    println!("Derived Proxy: {}", proxy);
+
+    Ok(proxy)
+}
 
     pub(crate) async fn send_call(
         private_key: Option<&str>,
@@ -107,6 +114,7 @@ pub(crate) mod sports;
 pub(crate) mod tags;
 pub(crate) mod upgrade;
 pub(crate) mod wallet;
+pub(crate) mod transfer;
 
 pub(crate) fn is_numeric_id(id: &str) -> bool {
     id.parse::<u64>().is_ok()
