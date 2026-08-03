@@ -24,7 +24,7 @@ Next, send a small amount of POL (Polygon) to your Magic wallet's public address
 
 ```bash
 git clone https://github.com/DevR8080/Polymarket-Email-Wallet-Recovery.git
-cd polymarket-cli
+cd Polymarket-Email-Wallet-Recovery
 cargo install --path .
 ```
 
